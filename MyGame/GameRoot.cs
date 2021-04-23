@@ -1,6 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
@@ -9,14 +9,17 @@ namespace MyGame
     public class GameRoot : Game 
     {
         public static GraphicsDeviceManager graphics;
-        private SpriteBatch _spriteBatch;
-        private List<Ship> _ships;
-        private List<Impostor> _impostors;
+        public static ContentManager content;
+        public static SpriteBatch spriteBatch;
+        private SpriteBatch SpriteBatch;
+        private Ship ship;
+        private EnemyManager EnemyManager;
 
         public GameRoot() 
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
+            content = Content;
             IsMouseVisible = true;
             Window.Title = "KILL THE IMPOSTOR!";
             graphics.PreferredBackBufferHeight = 800;
@@ -25,22 +28,15 @@ namespace MyGame
 
         protected override void Initialize()
         {
-            this._ships = new List<Ship>();
-            this._impostors = new List<Impostor>();
+            this.ship = new Ship();
+            this.EnemyManager = new EnemyManager();
             base.Initialize();
         }
 
         protected override void LoadContent()
         {
-            this._spriteBatch = new SpriteBatch(GraphicsDevice);
-
-            this._ships.Add(new Ship(new Vector2(100, 400), Content));
-
-            Random random = new Random();
-            for (int i = 0; i <= 8; i++)
-            {
-                this._impostors.Add(new Impostor(new Vector2(random.Next(200, Window.ClientBounds.Width - 64), random.Next(64, Window.ClientBounds.Height - 64)), Content));
-            }
+            this.SpriteBatch = new SpriteBatch(GraphicsDevice);
+            spriteBatch = this.SpriteBatch;
         }
 
         protected override void Update(GameTime gameTime)
@@ -48,29 +44,21 @@ namespace MyGame
             KeyboardState kState = Keyboard.GetState();
             if (kState.IsKeyDown(Keys.Escape)) Exit();
 
-            this._ships[0].Update(gameTime, kState);
-            
-            foreach (var impostor in this._impostors)
-            {
-                impostor.Update(gameTime, kState);
-            }
-            
+            this.ship.Update(gameTime, kState);
+            this.EnemyManager.Update(gameTime, kState);
+
             base.Update(gameTime);
         }
 
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.Purple);
-            this._spriteBatch.Begin();
+            this.SpriteBatch.Begin();
 
-            this._ships[0].Draw(this._spriteBatch);
-            
-            foreach (var impostor in this._impostors)
-            {
-                impostor.Draw(this._spriteBatch);
-            }
+            this.ship.Draw();
+            this.EnemyManager.Draw();
 
-            this._spriteBatch.End();
+            this.SpriteBatch.End();
             base.Draw(gameTime);
         }
     }
