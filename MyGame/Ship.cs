@@ -6,23 +6,25 @@ namespace MyGame
 {
     public class Ship
     {
+        private GameRoot game;
         private Texture2D texture;
         private Vector2 position;
         private Rectangle hitbox;
         private float speed;
         private float health;
 
-        public Ship()
+        public Ship(GameRoot game)
         {
-            this.texture = GameRoot.content.Load<Texture2D>("sprites/player/sd-ship");
+            this.game = game;
+            this.texture = this.game.content.Load<Texture2D>("sprites/player/sd-ship");
             this.position = new Vector2(100, 400);
-            this.hitbox = new Rectangle(0, 0, this.texture.Width, this.texture.Height);
             this.speed = 500.0f;
             this.health = 3.0f;
         } // Constructor sets all objects and values
 
         public void Update(GameTime gTime, KeyboardState kState)
         {
+            this.hitbox = new Rectangle(0, 0, this.texture.Width, this.texture.Height);
             this.Movement(gTime, kState);
             this.BackFall(gTime, kState);
             this.Boundaries();
@@ -30,18 +32,18 @@ namespace MyGame
 
         public void Draw()
         {
-            GameRoot.spriteBatch.Draw(this.texture, this.position, this.hitbox, Color.White);
+            this.game.spriteBatch.Draw(this.texture, this.position, this.hitbox, Color.White);
         } // Draws ship on the screen
 
         private void Boundaries()
         {
-            if (this.position.X > GameRoot.graphics.PreferredBackBufferWidth - this.hitbox.Width)
-                this.position.X = GameRoot.graphics.PreferredBackBufferWidth - this.hitbox.Width;
+            if (this.position.X > this.game.graphics.PreferredBackBufferWidth - this.hitbox.Width)
+                this.position.X = this.game.graphics.PreferredBackBufferWidth - this.hitbox.Width;
 
             if (this.position.X < 0) this.position.X = 0;
             
-            if (this.position.Y > GameRoot.graphics.PreferredBackBufferHeight - this.hitbox.Height)
-                this.position.Y = GameRoot.graphics.PreferredBackBufferHeight - this.hitbox.Height;
+            if (this.position.Y > this.game.graphics.PreferredBackBufferHeight - this.hitbox.Height)
+                this.position.Y = this.game.graphics.PreferredBackBufferHeight - this.hitbox.Height;
             
             if (this.position.Y < 0) this.position.Y = 0;
         } // Keeps ship within bounds

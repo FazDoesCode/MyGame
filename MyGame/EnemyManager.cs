@@ -8,15 +8,17 @@ namespace MyGame
     public class EnemyManager : Dictionary<int, Impostor>
     {
         private Random randUtil;
+        private GameRoot game;
         private int enemyCap;
         
-        public EnemyManager()
+        public EnemyManager(GameRoot game)
         {
+            this.game = game;
             this.randUtil = new Random();
             this.enemyCap = 4;
         }
 
-        public void Update(GameTime gTime, KeyboardState kState)
+        public void Update(GameTime gTime)
         {
 
             foreach (var enemy in this)
@@ -33,7 +35,7 @@ namespace MyGame
 
             foreach (var enemy in this)
             {
-                enemy.Value.Update(gTime, kState);
+                enemy.Value.Update(gTime);
             }
         }
 
@@ -47,13 +49,13 @@ namespace MyGame
         
         private void CreateEnemy()
         {
-            this.Add(this.CreateId(), new Impostor(this.RandomPosition()));
+            this.Add(this.CreateId(), new Impostor(this.RandomPosition(), this.game));
         }
 
         private Vector2 RandomPosition()
         {
-            int maxX = randUtil.Next(GameRoot.graphics.PreferredBackBufferWidth, GameRoot.graphics.PreferredBackBufferWidth + 1000);
-            int maxY = randUtil.Next(0, GameRoot.graphics.PreferredBackBufferHeight - 64);
+            int maxX = randUtil.Next(this.game.graphics.PreferredBackBufferWidth, this.game.graphics.PreferredBackBufferWidth + 1000);
+            int maxY = randUtil.Next(0, this.game.graphics.PreferredBackBufferHeight - 64);
             return new Vector2(maxX, maxY);
         }
         

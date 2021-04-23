@@ -8,9 +8,9 @@ namespace MyGame
 {
     public class GameRoot : Game 
     {
-        public static GraphicsDeviceManager graphics;
-        public static ContentManager content;
-        public static SpriteBatch spriteBatch;
+        public GraphicsDeviceManager graphics;
+        public ContentManager content;
+        public SpriteBatch spriteBatch;
         private SpriteBatch SpriteBatch;
         private Ship ship;
         private EnemyManager EnemyManager;
@@ -28,8 +28,8 @@ namespace MyGame
 
         protected override void Initialize()
         {
-            this.ship = new Ship();
-            this.EnemyManager = new EnemyManager();
+            this.ship = new Ship(this);
+            this.EnemyManager = new EnemyManager(this);
             base.Initialize();
         }
 
@@ -45,7 +45,7 @@ namespace MyGame
             if (kState.IsKeyDown(Keys.Escape)) Exit();
 
             this.ship.Update(gameTime, kState);
-            this.EnemyManager.Update(gameTime, kState);
+            this.EnemyManager.Update(gameTime);
 
             base.Update(gameTime);
         }
