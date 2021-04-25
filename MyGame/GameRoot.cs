@@ -6,16 +6,16 @@ using Microsoft.Xna.Framework.Input;
 
 namespace MyGame 
 {
-    public class GameRoot : Game 
+    public class GameRoot : Game
     {
         public GraphicsDeviceManager graphics;
         public ContentManager content;
         public SpriteBatch spriteBatch;
         private SpriteBatch SpriteBatch;
-        private Ship ship;
+        private Player player;
         private EnemyManager EnemyManager;
-
-        public GameRoot() 
+        
+        public GameRoot()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
@@ -28,7 +28,7 @@ namespace MyGame
 
         protected override void Initialize()
         {
-            this.ship = new Ship(this);
+            this.player = new Player(this);
             this.EnemyManager = new EnemyManager(this);
             base.Initialize();
         }
@@ -44,7 +44,7 @@ namespace MyGame
             KeyboardState kState = Keyboard.GetState();
             if (kState.IsKeyDown(Keys.Escape)) Exit();
 
-            this.ship.Update(gameTime, kState);
+            this.player.Update(gameTime, kState);
             this.EnemyManager.Update(gameTime);
 
             base.Update(gameTime);
@@ -55,7 +55,7 @@ namespace MyGame
             GraphicsDevice.Clear(Color.Purple);
             this.SpriteBatch.Begin();
 
-            this.ship.Draw();
+            this.player.Draw();
             this.EnemyManager.Draw();
 
             this.SpriteBatch.End();
