@@ -1,6 +1,4 @@
-﻿using System;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
@@ -8,35 +6,35 @@ namespace MyGame
 {
     public class Impostor
     {
-        private ContentManager _Content;
-        private Texture2D _texture;
-        private Vector2 _position;
-        private Rectangle _hitbox;
-
-        public Impostor(Vector2 position, ContentManager content)
+        public Texture2D texture;
+        public Vector2 position;
+        public Rectangle hitbox;
+        private GameRoot game;
+        private float backfallSpeed;
+        
+        public Impostor(Vector2 position, GameRoot game)
         {
-            this._Content = content;
-            this._texture = _Content.Load<Texture2D>("sprites/enemies/among-us-red");
-            this._position = position;
-            this._hitbox = new Rectangle(0, 0, this._texture.Width, this._texture.Height);
-            Console.Write("Created an impostor!\nPosition:\n     X: {0}\n     Y: {01}\n", this._position.X, this._position.Y);
+            this.game = game;
+            this.texture = this.game.content.Load<Texture2D>("sprites/enemies/among-us-red");
+            this.position = position;
+            this.backfallSpeed = 80.0f;
         }
 
-        public void Update(GameTime gTime, KeyboardState kState)
+        public void Update(GameTime gTime)
         {
+            this.hitbox = new Rectangle(0, 0, this.texture.Width, this.texture.Height);
             this.BackFall(gTime);
         }
         
-        public void Draw(SpriteBatch spriteBatch)
+        public void Draw()
         {
-            spriteBatch.Draw(this._texture, this._position, this._hitbox, Color.White);
+            this.game.spriteBatch.Draw(this.texture, this.position, this.hitbox, Color.White);
         } // Draws ship on the screen
 
         private void BackFall(GameTime gTime)
         {
-            float backFallSpeed = 50.0f;
             float deltaTime = (float) gTime.ElapsedGameTime.TotalSeconds;
-            this._position.X -= backFallSpeed * deltaTime;
+            this.position.X -= this.backfallSpeed * deltaTime;
         }
     }
 }
