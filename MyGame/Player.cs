@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -29,7 +30,7 @@ namespace MyGame
             this.Movement(gTime, kState);
             this.BackFall(gTime, kState);
             this.Boundaries();
-            if (this.health == 0) Environment.Exit(1);
+            // this.Collision();
         } // Runs code block 60 times per second
 
         public void Draw()
@@ -37,9 +38,16 @@ namespace MyGame
             this.game.spriteBatch.Draw(this.texture, this.position, this.hitbox, Color.White);
         } // Draws ship on the screen
 
-        private void Collosion()
+        private void Collision()
         {
-            
+            if (this.health == 0) Environment.Exit(1);
+            foreach (var enemy in game.EnemyManager.Values)
+            {
+                if (this.hitbox.Intersects(enemy.hitbox))
+                {
+                    this.health--;
+                }
+            }
         }
 
         private void Boundaries()

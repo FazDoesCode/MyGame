@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -11,9 +10,9 @@ namespace MyGame
         public GraphicsDeviceManager graphics;
         public ContentManager content;
         public SpriteBatch spriteBatch;
-        private SpriteBatch SpriteBatch;
+        public EnemyManager EnemyManager;
         private Player player;
-        private EnemyManager EnemyManager;
+        
         
         public GameRoot()
         {
@@ -35,8 +34,7 @@ namespace MyGame
 
         protected override void LoadContent()
         {
-            this.SpriteBatch = new SpriteBatch(GraphicsDevice);
-            spriteBatch = this.SpriteBatch;
+            this.spriteBatch = new SpriteBatch(GraphicsDevice);
         }
 
         protected override void Update(GameTime gameTime)
@@ -53,12 +51,12 @@ namespace MyGame
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.Purple);
-            this.SpriteBatch.Begin();
+            this.spriteBatch.Begin();
 
             this.player.Draw();
             this.EnemyManager.Draw();
 
-            this.SpriteBatch.End();
+            this.spriteBatch.End();
             base.Draw(gameTime);
         }
     }

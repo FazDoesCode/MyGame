@@ -8,7 +8,7 @@ namespace MyGame
     {
         public Texture2D texture;
         public Vector2 position;
-        private Rectangle hitbox;
+        public Rectangle hitbox;
         private GameRoot game;
         private float backfallSpeed;
         

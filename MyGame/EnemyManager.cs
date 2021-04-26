@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Input;
 
 namespace MyGame
 {
@@ -15,27 +15,25 @@ namespace MyGame
         {
             this.game = game;
             this.randUtil = new Random();
-            this.enemyCap = 4;
+            this.enemyCap = 8;
         }
 
         public void Update(GameTime gTime)
         {
-
             foreach (var enemy in this)
             {
-                if (enemy.Value.position.X < 0 - enemy.Value.texture.Width)
+                if (enemy.Value.position.X < (0 - enemy.Value.texture.Width))
                 {
                     this.Remove(enemy.Key);
-                    Console.WriteLine("Removed enemy number: " + enemy.Key);
                 }
             }
             
-            if (this.Count < enemyCap)
+            if (this.Count < this.enemyCap)
                 this.CreateEnemy();
 
-            foreach (var enemy in this)
+            foreach (var enemy in this.Values)
             {
-                enemy.Value.Update(gTime);
+                enemy.Update(gTime);
             }
         }
 
