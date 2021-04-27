@@ -20,14 +20,13 @@ namespace MyGame
             this.game = game;
             this.texture = this.game.content.Load<Texture2D>("sprites/player/TrollFace-64x64");
             this.position = new Vector2(100, 400);
-            this.speed = 500.0f;
+            this.speed = 5.0f * 100.0f;
             this.health = 3.0f;
         } // Constructor sets all objects and values
         
         public void Update(GameTime gTime, KeyboardState kState)
         {
             this.hitbox = new Rectangle((int) this.position.X, (int) this.position.Y, this.texture.Width, this.texture.Height);
-            Debug.WriteLine(this.hitbox);
             this.Movement(gTime, kState);
             this.BackFall(gTime, kState);
             this.Boundaries();
@@ -47,7 +46,7 @@ namespace MyGame
                 if (this.hitbox.Intersects(enemy.Value.hitbox))
                 {
                     this.health--;
-                    game.EnemyManager.Remove(enemy.Key);
+                    this.game.EnemyManager.Remove(enemy.Key);
                 }
             }
         }

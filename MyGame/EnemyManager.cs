@@ -15,7 +15,7 @@ namespace MyGame
         {
             this.game = game;
             this.randUtil = new Random();
-            this.enemyCap = 100;
+            this.enemyCap = 50;
         }
 
         public void Update(GameTime gTime)
@@ -31,9 +31,9 @@ namespace MyGame
             if (this.Count < this.enemyCap)
                 this.CreateEnemy();
 
-            foreach (var enemy in this.Values)
+            foreach (var enemy in this)
             {
-                enemy.Update(gTime);
+                enemy.Value.Update(gTime);
             }
         }
 

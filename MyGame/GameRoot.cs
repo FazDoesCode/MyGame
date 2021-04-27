@@ -50,7 +50,7 @@ namespace MyGame
 
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.Purple);
+            GraphicsDevice.Clear(new Color(69, 34, 86));
             this.spriteBatch.Begin();
 
             this.player.Draw();
