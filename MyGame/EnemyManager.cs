@@ -10,12 +10,15 @@ namespace MyGame
         private Random randUtil;
         private GameRoot game;
         private int enemyCap;
+        private int spawnDelay;
+        private double lastSpawned;
         
         public EnemyManager(GameRoot game)
         {
             this.game = game;
             this.randUtil = new Random();
-            this.enemyCap = 50;
+            this.enemyCap = 25;
+            this.spawnDelay = 1000;
         }
 
         public void Update(GameTime gTime)
@@ -29,7 +32,7 @@ namespace MyGame
             }
             
             if (this.Count < this.enemyCap)
-                this.CreateEnemy();
+                this.CreateEnemy(gTime);
 
             foreach (var enemy in this)
             {
@@ -45,14 +48,18 @@ namespace MyGame
             }
         }
         
-        private void CreateEnemy()
+        private void CreateEnemy(GameTime gTime)
         {
-            this.Add(this.CreateId(), new Impostor(this.RandomPosition(), this.game));
+            if (gTime.TotalGameTime.TotalMilliseconds > this.lastSpawned + this.spawnDelay)
+            {
+                this.Add(this.CreateId(), new Impostor(this.RandomPosition(), this.game));
+                lastSpawned = gTime.TotalGameTime.TotalMilliseconds;
+            }
         }
 
         private Vector2 RandomPosition()
         {
-            int maxX = randUtil.Next(this.game.graphics.PreferredBackBufferWidth, this.game.graphics.PreferredBackBufferWidth + 1000);
+            int maxX = this.game.graphics.PreferredBackBufferWidth + 100;
             int maxY = randUtil.Next(0, this.game.graphics.PreferredBackBufferHeight - 64);
             return new Vector2(maxX, maxY);
         }
