@@ -26,26 +26,28 @@ namespace MyGame
         
         public void Update(GameTime gTime, KeyboardState kState)
         {
-            this.hitbox = new Rectangle(0, 0, this.texture.Width, this.texture.Height);
+            this.hitbox = new Rectangle((int) this.position.X, (int) this.position.Y, this.texture.Width, this.texture.Height);
+            Debug.WriteLine(this.hitbox);
             this.Movement(gTime, kState);
             this.BackFall(gTime, kState);
             this.Boundaries();
-            // this.Collision();
+            this.Collision();
         } // Runs code block 60 times per second
 
         public void Draw()
         {
-            this.game.spriteBatch.Draw(this.texture, this.position, this.hitbox, Color.White);
+            this.game.spriteBatch.Draw(this.texture, this.hitbox, Color.White);
         } // Draws ship on the screen
 
         private void Collision()
         {
             if (this.health == 0) Environment.Exit(1);
-            foreach (var enemy in game.EnemyManager.Values)
+            foreach (var enemy in game.EnemyManager)
             {
-                if (this.hitbox.Intersects(enemy.hitbox))
+                if (this.hitbox.Intersects(enemy.Value.hitbox))
                 {
                     this.health--;
+                    game.EnemyManager.Remove(enemy.Key);
                 }
             }
         }

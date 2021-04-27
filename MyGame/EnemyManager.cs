@@ -15,7 +15,7 @@ namespace MyGame
         {
             this.game = game;
             this.randUtil = new Random();
-            this.enemyCap = 8;
+            this.enemyCap = 100;
         }
 
         public void Update(GameTime gTime)

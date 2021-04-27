@@ -22,13 +22,13 @@ namespace MyGame
 
         public void Update(GameTime gTime)
         {
-            this.hitbox = new Rectangle(0, 0, this.texture.Width, this.texture.Height);
+            this.hitbox = new Rectangle((int) this.position.X, (int) this.position.Y, this.texture.Width, this.texture.Height);
             this.BackFall(gTime);
         }
         
         public void Draw()
         {
-            this.game.spriteBatch.Draw(this.texture, this.position, this.hitbox, Color.White);
+            this.game.spriteBatch.Draw(this.texture, this.hitbox, Color.White);
         } // Draws ship on the screen
 
         private void BackFall(GameTime gTime)
