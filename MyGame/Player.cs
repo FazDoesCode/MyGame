@@ -11,7 +11,7 @@ namespace MyGame
         private GameRoot game;
         private Texture2D texture;
         public Vector2 position;
-        private ProjectileManager projectileManager;
+        public ProjectileManager projectileManager;
         private Rectangle hitbox;
         private float speed;
         private float health;
@@ -45,12 +45,12 @@ namespace MyGame
         private void Collision()
         {
             if (this.health == 0) Environment.Exit(1);
-            foreach (var enemy in game.EnemyManager)
+            foreach (var enemy in game.EnemyManager) // TODO: BULLET UPDATE CRASH HAS SOMETHING TO DO WITH THIS. Game crashes when you collide with an enemy.
             {
-                if (this.hitbox.Intersects(enemy.Value.hitbox))
+                if (this.hitbox.Intersects(enemy.hitbox))
                 {
                     this.health--;
-                    this.game.EnemyManager.Remove(enemy.Key);
+                    this.game.EnemyManager.Remove(enemy);
                 }
             }
         } // Loops through the enemy manager and checks if the player collides with an enemy.

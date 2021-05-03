@@ -11,7 +11,7 @@ namespace MyGame
         public ContentManager content;
         public SpriteBatch spriteBatch;
         public EnemyManager EnemyManager;
-        private Player player;
+        public Player player;
         
         
         public GameRoot()

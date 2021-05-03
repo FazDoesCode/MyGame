@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework;
 
 namespace MyGame
 {
-    public class EnemyManager : Dictionary<int, Impostor>
+    public class EnemyManager : List<Impostor>
     {
         private Random randUtil;
         private GameRoot game;
@@ -25,18 +25,17 @@ namespace MyGame
         {
             foreach (var enemy in this)
             {
-                if (enemy.Value.position.X < (0 - enemy.Value.texture.Width))
+                if (enemy.position.X < (0 - enemy.texture.Width))
                 {
-                    this.Remove(enemy.Key);
+                    this.Remove(enemy);
                 }
             }
             
-            if (this.Count < this.enemyCap)
-                this.CreateEnemy(gTime);
+            if (this.Count < this.enemyCap) this.CreateEnemy(gTime);
 
             foreach (var enemy in this)
             {
-                enemy.Value.Update(gTime);
+                enemy.Update(gTime);
             }
         }
 
@@ -44,7 +43,7 @@ namespace MyGame
         {
             foreach (var enemy in this)
             {
-                enemy.Value.Draw();
+                enemy.Draw();
             }
         }
         
@@ -52,7 +51,7 @@ namespace MyGame
         {
             if (gTime.TotalGameTime.TotalMilliseconds > this.lastSpawned + this.spawnDelay)
             {
-                this.Add(this.CreateId(), new Impostor(this.RandomPosition(), this.game));
+                this.Add(new Impostor(this.RandomPosition(), this.game));
                 lastSpawned = gTime.TotalGameTime.TotalMilliseconds;
             }
         }
@@ -62,11 +61,6 @@ namespace MyGame
             int maxX = this.game.graphics.PreferredBackBufferWidth + 100;
             int maxY = randUtil.Next(0, this.game.graphics.PreferredBackBufferHeight - 64);
             return new Vector2(maxX, maxY);
-        }
-        
-        private int CreateId()
-        {
-            return randUtil.Next(Int32.MaxValue);
         }
     }
 }

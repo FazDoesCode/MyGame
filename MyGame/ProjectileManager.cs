@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 
@@ -24,6 +25,7 @@ namespace MyGame
             {
                 firebolt.Update(gameTime);
             }
+            
             this.CastFirebolt(gameTime);
             this.Hit();
         }
@@ -36,7 +38,7 @@ namespace MyGame
             }
         }
 
-        public void CastFirebolt(GameTime gameTime)
+        private void CastFirebolt(GameTime gameTime)
         {
             KeyboardState keyboardState = Keyboard.GetState();
             if (!keyboardState.IsKeyDown(Keys.Space)) return; // Checks if player is pressing spacebar.
@@ -47,21 +49,64 @@ namespace MyGame
                 this.lastCast = gameTime.TotalGameTime.TotalMilliseconds;
             }
         }
-        
-        private void Hit()
+
+        private void Hit2()
         {
-            foreach (var firebolt in this)
+            List<Projectile> newProjectileList = new List<Projectile>();
+            List<Impostor> newEnemyList = new List<Impostor>();
+            
+            newEnemyList.AddRange(this.game.EnemyManager);
+            newProjectileList.AddRange(this);
+            
+            for (int i = 0; i < newEnemyList.Count - 1; i++)
             {
-                foreach (var enemy in this.game.EnemyManager)
+                for (int j = 0; j < newProjectileList.Count - 1; j++)
                 {
-                    if (firebolt.hitbox.Intersects(enemy.Value.hitbox))
+                    if (this[i].hitbox.Intersects(this.game.EnemyManager[j].hitbox))
                     {
-                        this.game.EnemyManager.Remove(enemy.Key); // TODO: https://stackoverflow.com/questions/2024179/collection-was-modified-enumeration-operation-may-not-execute-in-arraylist
-                        this.Remove(firebolt);
+                        newEnemyList.Remove(this.game.EnemyManager[i]);
+                        newProjectileList.Remove(this[j]);
                     }
                 }
             }
             
+            this.Clear();
+            this.game.EnemyManager.Clear();
+            this.AddRange(newProjectileList);
+            this.game.EnemyManager.AddRange(newEnemyList);
         }
+        
+        private void Hit()
+        {
+            List<Projectile> newProjectileList = new List<Projectile>();
+            List<Impostor> newEnemyList = new List<Impostor>();
+
+            foreach (var firebolt in this)
+            {
+                newProjectileList.Add(firebolt);
+            }
+
+            foreach (var enemy in this.game.EnemyManager)
+            {
+                newEnemyList.Add(enemy);
+            }
+            
+            foreach (var firebolt in this)
+            {
+                foreach (var enemy in this.game.EnemyManager)
+                {
+                    if (firebolt.hitbox.Intersects(enemy.hitbox))
+                    {
+                        newEnemyList.Remove(enemy);
+                        newProjectileList.Remove(firebolt);
+                    }
+                }
+            }
+
+            this.game.player.projectileManager.Clear();
+            this.game.player.projectileManager.AddRange(newProjectileList);
+            this.game.EnemyManager.Clear();
+            this.game.EnemyManager.AddRange(newEnemyList);
+        } // Not proud of this one.
     }
 }
