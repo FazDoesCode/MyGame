@@ -10,7 +10,8 @@ namespace MyGame
     {
         private GameRoot game;
         private Texture2D texture;
-        private Vector2 position;
+        public Vector2 position;
+        private ProjectileManager projectileManager;
         private Rectangle hitbox;
         private float speed;
         private float health;
@@ -20,22 +21,25 @@ namespace MyGame
             this.game = game;
             this.texture = this.game.content.Load<Texture2D>("sprites/player/TrollFace-64x64");
             this.position = new Vector2(100, 400);
-            this.speed = 5.0f * 100.0f;
+            this.projectileManager = new ProjectileManager(this, this.game);
+            this.speed = 500.0f;
             this.health = 3.0f;
         } // Constructor sets all objects and values
         
         public void Update(GameTime gTime, KeyboardState kState)
         {
-            this.hitbox = new Rectangle((int) this.position.X, (int) this.position.Y, this.texture.Width, this.texture.Height);
-            this.Movement(gTime, kState);
-            this.BackFall(gTime, kState);
-            this.Boundaries();
-            this.Collision();
-        } // Runs code block 60 times per second
+            this.hitbox = new Rectangle((int) this.position.X, (int) this.position.Y, this.texture.Width, this.texture.Height); // Sets a new hitbox 60 times per second.
+            this.Movement(gTime, kState); // Calls the movement method.
+            this.BackFall(gTime, kState); // Calls the backfall method.
+            this.projectileManager.Update(gTime); // Calls the projectile manager's update method.
+            this.Boundaries(); // Calls the boundaries method.
+            this.Collision(); // Calls the collision function.
+        } // Runs code block 60 times per second.
 
         public void Draw()
         {
-            this.game.spriteBatch.Draw(this.texture, this.hitbox, Color.White);
+            this.game.spriteBatch.Draw(this.texture, this.hitbox, Color.White); // Draws this object on the screen.
+            this.projectileManager.Draw(); // Calls the projectile manager's drawing method.
         } // Draws ship on the screen
 
         private void Collision()
@@ -49,7 +53,7 @@ namespace MyGame
                     this.game.EnemyManager.Remove(enemy.Key);
                 }
             }
-        }
+        } // Loops through the enemy manager and checks if the player collides with an enemy.
 
         private void Boundaries()
         {
@@ -62,7 +66,7 @@ namespace MyGame
                 this.position.Y = this.game.graphics.PreferredBackBufferHeight - this.hitbox.Height;
             
             if (this.position.Y < 0) this.position.Y = 0;
-        } // Keeps ship within bounds
+        } // Keeps player within bounds.
 
         private void Movement(GameTime gTime, KeyboardState kState)
         {
