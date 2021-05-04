@@ -9,7 +9,7 @@ namespace MyGame
     public class Player
     {
         private GameRoot game;
-        private Texture2D texture;
+        public Texture2D texture;
         public Vector2 position;
         public ProjectileManager projectileManager;
         private Rectangle hitbox;
@@ -44,13 +44,17 @@ namespace MyGame
 
         private void Collision()
         {
-            if (this.health == 0) Environment.Exit(1);
-            foreach (var enemy in game.EnemyManager) // TODO: BULLET UPDATE CRASH HAS SOMETHING TO DO WITH THIS. Game crashes when you collide with an enemy.
+            if (this.health == 0)
             {
-                if (this.hitbox.Intersects(enemy.hitbox))
+                Environment.Exit(1);
+            }
+            for (int i = 0; i < this.game.EnemyManager.Count; i++)
+            {
+                if (this.hitbox.Intersects(this.game.EnemyManager[i].hitbox))
                 {
                     this.health--;
-                    this.game.EnemyManager.Remove(enemy);
+                    Console.WriteLine("Deducted health");
+                    this.game.EnemyManager.Remove(this.game.EnemyManager[i]);
                 }
             }
         } // Loops through the enemy manager and checks if the player collides with an enemy.
@@ -58,27 +62,49 @@ namespace MyGame
         private void Boundaries()
         {
             if (this.position.X > this.game.graphics.PreferredBackBufferWidth - this.hitbox.Width)
+            {
                 this.position.X = this.game.graphics.PreferredBackBufferWidth - this.hitbox.Width;
+            }
 
-            if (this.position.X < 0) this.position.X = 0;
-            
+            if (this.position.X < 0)
+            {
+                this.position.X = 0;
+            }
+
             if (this.position.Y > this.game.graphics.PreferredBackBufferHeight - this.hitbox.Height)
+            {
                 this.position.Y = this.game.graphics.PreferredBackBufferHeight - this.hitbox.Height;
-            
-            if (this.position.Y < 0) this.position.Y = 0;
+            }
+
+            if (this.position.Y < 0)
+            {
+                this.position.Y = 0;
+            }
         } // Keeps player within bounds.
 
         private void Movement(GameTime gTime, KeyboardState kState)
         {
             float deltaTime = (float) gTime.ElapsedGameTime.TotalSeconds;
 
-            if (kState.IsKeyDown(Keys.A)) this.position.X -= this.speed * deltaTime;
-            
-            if (kState.IsKeyDown(Keys.D)) this.position.X += this.speed * deltaTime;
-           
-            if (kState.IsKeyDown(Keys.W)) this.position.Y -= this.speed * deltaTime;
-            
-            if (kState.IsKeyDown(Keys.S)) this.position.Y += this.speed * deltaTime;
+            if (kState.IsKeyDown(Keys.A))
+            {
+                this.position.X -= this.speed * deltaTime;
+            }
+
+            if (kState.IsKeyDown(Keys.D))
+            {
+                this.position.X += this.speed * deltaTime;
+            }
+
+            if (kState.IsKeyDown(Keys.W))
+            {
+                this.position.Y -= this.speed * deltaTime;
+            }
+
+            if (kState.IsKeyDown(Keys.S))
+            {
+                this.position.Y += this.speed * deltaTime;
+            }
 
         } // Moves the ship object
 
@@ -86,7 +112,10 @@ namespace MyGame
         {
             float backFallSpeed = 50.0f;
             float deltaTime = (float) gTime.ElapsedGameTime.TotalSeconds;
-            if (kState.IsKeyDown(Keys.D) || this.position.X < 50) return;
+            if (kState.IsKeyDown(Keys.D) || this.position.X < 50)
+            {
+                return;
+            }
             this.position.X -= backFallSpeed * deltaTime;
         } // Pushes the ship back while it's idle
     }

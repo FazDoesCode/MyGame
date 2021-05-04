@@ -40,7 +40,10 @@ namespace MyGame
         protected override void Update(GameTime gameTime)
         {
             KeyboardState kState = Keyboard.GetState();
-            if (kState.IsKeyDown(Keys.Escape)) Exit();
+            if (kState.IsKeyDown(Keys.Escape))
+            {
+                this.Exit();
+            }
 
             this.player.Update(gameTime, kState);
             this.EnemyManager.Update(gameTime);

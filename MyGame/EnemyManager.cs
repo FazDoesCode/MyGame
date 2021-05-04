@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 using Microsoft.Xna.Framework;
 
 namespace MyGame
@@ -23,27 +22,30 @@ namespace MyGame
 
         public void Update(GameTime gTime)
         {
-            foreach (var enemy in this)
+            for (int i = 0; i < this.Count; i++)
             {
-                if (enemy.position.X < (0 - enemy.texture.Width))
+                if (this[i].position.X < (0 - this[i].texture.Width))
                 {
-                    this.Remove(enemy);
+                    this.Remove(this[i]);
                 }
             }
-            
-            if (this.Count < this.enemyCap) this.CreateEnemy(gTime);
 
-            foreach (var enemy in this)
+            if (this.Count < this.enemyCap)
             {
-                enemy.Update(gTime);
+                this.CreateEnemy(gTime);
+            }
+            
+            for (int i = 0; i < this.Count; i++)
+            {
+                this[i].Update(gTime);
             }
         }
 
         public void Draw()
         {
-            foreach (var enemy in this)
+            for (int i = 0; i < this.Count; i++)
             {
-                enemy.Draw();
+                this[i].Draw();
             }
         }
         
