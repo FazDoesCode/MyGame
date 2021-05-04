@@ -11,7 +11,7 @@ namespace MyGame
         public ContentManager content;
         public SpriteBatch spriteBatch;
         public EnemyManager EnemyManager;
-        private Player player;
+        public Player player;
         
         
         public GameRoot()
@@ -40,7 +40,10 @@ namespace MyGame
         protected override void Update(GameTime gameTime)
         {
             KeyboardState kState = Keyboard.GetState();
-            if (kState.IsKeyDown(Keys.Escape)) Exit();
+            if (kState.IsKeyDown(Keys.Escape))
+            {
+                this.Exit();
+            }
 
             this.player.Update(gameTime, kState);
             this.EnemyManager.Update(gameTime);
@@ -50,7 +53,7 @@ namespace MyGame
 
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.Purple);
+            GraphicsDevice.Clear(new Color(69, 34, 86));
             this.spriteBatch.Begin();
 
             this.player.Draw();

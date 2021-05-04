@@ -1,65 +1,68 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 using Microsoft.Xna.Framework;
 
 namespace MyGame
 {
-    public class EnemyManager : Dictionary<int, Impostor>
+    public class EnemyManager : List<Impostor>
     {
         private Random randUtil;
         private GameRoot game;
         private int enemyCap;
+        private int spawnDelay;
+        private double lastSpawned;
         
         public EnemyManager(GameRoot game)
         {
             this.game = game;
             this.randUtil = new Random();
-            this.enemyCap = 100;
+            this.enemyCap = 25;
+            this.spawnDelay = 1000;
         }
 
         public void Update(GameTime gTime)
         {
-            foreach (var enemy in this)
+            for (int i = 0; i < this.Count; i++)
             {
-                if (enemy.Value.position.X < (0 - enemy.Value.texture.Width))
+                if (this[i].position.X < (0 - this[i].texture.Width))
                 {
-                    this.Remove(enemy.Key);
+                    this.Remove(this[i]);
                 }
             }
-            
-            if (this.Count < this.enemyCap)
-                this.CreateEnemy();
 
-            foreach (var enemy in this.Values)
+            if (this.Count < this.enemyCap)
             {
-                enemy.Update(gTime);
+                this.CreateEnemy(gTime);
+            }
+            
+            for (int i = 0; i < this.Count; i++)
+            {
+                this[i].Update(gTime);
             }
         }
 
         public void Draw()
         {
-            foreach (var enemy in this)
+            for (int i = 0; i < this.Count; i++)
             {
-                enemy.Value.Draw();
+                this[i].Draw();
             }
         }
         
-        private void CreateEnemy()
+        private void CreateEnemy(GameTime gTime)
         {
-            this.Add(this.CreateId(), new Impostor(this.RandomPosition(), this.game));
+            if (gTime.TotalGameTime.TotalMilliseconds > this.lastSpawned + this.spawnDelay)
+            {
+                this.Add(new Impostor(this.RandomPosition(), this.game));
+                lastSpawned = gTime.TotalGameTime.TotalMilliseconds;
+            }
         }
 
         private Vector2 RandomPosition()
         {
-            int maxX = randUtil.Next(this.game.graphics.PreferredBackBufferWidth, this.game.graphics.PreferredBackBufferWidth + 1000);
+            int maxX = this.game.graphics.PreferredBackBufferWidth + 100;
             int maxY = randUtil.Next(0, this.game.graphics.PreferredBackBufferHeight - 64);
             return new Vector2(maxX, maxY);
-        }
-        
-        private int CreateId()
-        {
-            return randUtil.Next(Int32.MaxValue);
         }
     }
 }

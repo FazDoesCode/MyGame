@@ -9,8 +9,9 @@ namespace MyGame
     public class Player
     {
         private GameRoot game;
-        private Texture2D texture;
-        private Vector2 position;
+        public Texture2D texture;
+        public Vector2 position;
+        public ProjectileManager projectileManager;
         private Rectangle hitbox;
         private float speed;
         private float health;
@@ -20,62 +21,90 @@ namespace MyGame
             this.game = game;
             this.texture = this.game.content.Load<Texture2D>("sprites/player/TrollFace-64x64");
             this.position = new Vector2(100, 400);
+            this.projectileManager = new ProjectileManager(this, this.game);
             this.speed = 500.0f;
             this.health = 3.0f;
         } // Constructor sets all objects and values
         
         public void Update(GameTime gTime, KeyboardState kState)
         {
-            this.hitbox = new Rectangle((int) this.position.X, (int) this.position.Y, this.texture.Width, this.texture.Height);
-            Debug.WriteLine(this.hitbox);
-            this.Movement(gTime, kState);
-            this.BackFall(gTime, kState);
-            this.Boundaries();
-            this.Collision();
-        } // Runs code block 60 times per second
+            this.hitbox = new Rectangle((int) this.position.X, (int) this.position.Y, this.texture.Width, this.texture.Height); // Sets a new hitbox 60 times per second.
+            this.Movement(gTime, kState); // Calls the movement method.
+            this.BackFall(gTime, kState); // Calls the backfall method.
+            this.projectileManager.Update(gTime); // Calls the projectile manager's update method.
+            this.Boundaries(); // Calls the boundaries method.
+            this.Collision(); // Calls the collision function.
+        } // Runs code block 60 times per second.
 
         public void Draw()
         {
-            this.game.spriteBatch.Draw(this.texture, this.hitbox, Color.White);
+            this.game.spriteBatch.Draw(this.texture, this.hitbox, Color.White); // Draws this object on the screen.
+            this.projectileManager.Draw(); // Calls the projectile manager's drawing method.
         } // Draws ship on the screen
 
         private void Collision()
         {
-            if (this.health == 0) Environment.Exit(1);
-            foreach (var enemy in game.EnemyManager)
+            if (this.health == 0)
             {
-                if (this.hitbox.Intersects(enemy.Value.hitbox))
+                Environment.Exit(1);
+            }
+            for (int i = 0; i < this.game.EnemyManager.Count; i++)
+            {
+                if (this.hitbox.Intersects(this.game.EnemyManager[i].hitbox))
                 {
                     this.health--;
-                    game.EnemyManager.Remove(enemy.Key);
+                    Console.WriteLine("Deducted health");
+                    this.game.EnemyManager.Remove(this.game.EnemyManager[i]);
                 }
             }
-        }
+        } // Loops through the enemy manager and checks if the player collides with an enemy.
 
         private void Boundaries()
         {
             if (this.position.X > this.game.graphics.PreferredBackBufferWidth - this.hitbox.Width)
+            {
                 this.position.X = this.game.graphics.PreferredBackBufferWidth - this.hitbox.Width;
+            }
 
-            if (this.position.X < 0) this.position.X = 0;
-            
+            if (this.position.X < 0)
+            {
+                this.position.X = 0;
+            }
+
             if (this.position.Y > this.game.graphics.PreferredBackBufferHeight - this.hitbox.Height)
+            {
                 this.position.Y = this.game.graphics.PreferredBackBufferHeight - this.hitbox.Height;
-            
-            if (this.position.Y < 0) this.position.Y = 0;
-        } // Keeps ship within bounds
+            }
+
+            if (this.position.Y < 0)
+            {
+                this.position.Y = 0;
+            }
+        } // Keeps player within bounds.
 
         private void Movement(GameTime gTime, KeyboardState kState)
         {
             float deltaTime = (float) gTime.ElapsedGameTime.TotalSeconds;
 
-            if (kState.IsKeyDown(Keys.A)) this.position.X -= this.speed * deltaTime;
-            
-            if (kState.IsKeyDown(Keys.D)) this.position.X += this.speed * deltaTime;
-           
-            if (kState.IsKeyDown(Keys.W)) this.position.Y -= this.speed * deltaTime;
-            
-            if (kState.IsKeyDown(Keys.S)) this.position.Y += this.speed * deltaTime;
+            if (kState.IsKeyDown(Keys.A))
+            {
+                this.position.X -= this.speed * deltaTime;
+            }
+
+            if (kState.IsKeyDown(Keys.D))
+            {
+                this.position.X += this.speed * deltaTime;
+            }
+
+            if (kState.IsKeyDown(Keys.W))
+            {
+                this.position.Y -= this.speed * deltaTime;
+            }
+
+            if (kState.IsKeyDown(Keys.S))
+            {
+                this.position.Y += this.speed * deltaTime;
+            }
 
         } // Moves the ship object
 
@@ -83,7 +112,10 @@ namespace MyGame
         {
             float backFallSpeed = 50.0f;
             float deltaTime = (float) gTime.ElapsedGameTime.TotalSeconds;
-            if (kState.IsKeyDown(Keys.D) || this.position.X < 50) return;
+            if (kState.IsKeyDown(Keys.D) || this.position.X < 50)
+            {
+                return;
+            }
             this.position.X -= backFallSpeed * deltaTime;
         } // Pushes the ship back while it's idle
     }
