@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
@@ -10,20 +11,26 @@ namespace MyGame
     {
         private GameRoot game;
         public Texture2D texture;
+        public Texture2D hurt1;
+        public Texture2D hurt2;
         public Vector2 position;
         public ProjectileManager projectileManager;
         private Rectangle hitbox;
         private float speed;
         private float health;
+        private SoundEffect hurtSound;
 
         public Player(GameRoot game)
         {
             this.game = game;
             this.texture = this.game.content.Load<Texture2D>("sprites/player/TrollFace-64x64");
+            this.hurt1 = this.game.content.Load<Texture2D>("sprites/player/Trollfacehurt1");
+            this.hurt2 = this.game.content.Load<Texture2D>("sprites/player/Trollfacehurt2");
             this.position = new Vector2(100, 400);
             this.projectileManager = new ProjectileManager(this, this.game);
             this.speed = 500.0f;
             this.health = 3.0f;
+            hurtSound = this.game.content.Load<SoundEffect>("sounds/sound effects/FUCK");
         } // Constructor sets all objects and values
         
         public void Update(GameTime gTime, KeyboardState kState)
@@ -38,7 +45,18 @@ namespace MyGame
 
         public void Draw()
         {
-            this.game.spriteBatch.Draw(this.texture, this.hitbox, Color.White); // Draws this object on the screen.
+            if (this.health == 3)
+            {
+                this.game.spriteBatch.Draw(this.texture, this.hitbox, Color.White); // Draws this object on the screen.
+            }
+            if (this.health == 2)
+            {
+                this.game.spriteBatch.Draw(this.hurt1, this.hitbox, Color.White);
+            }
+            if (this.health == 1)
+            {
+                this.game.spriteBatch.Draw(this.hurt2, this.hitbox, Color.White);
+            }
             this.projectileManager.Draw(); // Calls the projectile manager's drawing method.
         } // Draws ship on the screen
 
@@ -53,6 +71,7 @@ namespace MyGame
                 if (this.hitbox.Intersects(this.game.EnemyManager[i].hitbox))
                 {
                     this.health--;
+                    hurtSound.Play();
                     Console.WriteLine("Deducted health");
                     this.game.EnemyManager.Remove(this.game.EnemyManager[i]);
                 }

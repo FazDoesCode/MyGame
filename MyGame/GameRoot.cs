@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Media;
 
 namespace MyGame 
 {
@@ -12,7 +13,7 @@ namespace MyGame
         public SpriteBatch spriteBatch;
         public EnemyManager EnemyManager;
         public Player player;
-        
+        private Song backgroundMusic;
         
         public GameRoot()
         {
@@ -35,6 +36,10 @@ namespace MyGame
         protected override void LoadContent()
         {
             this.spriteBatch = new SpriteBatch(GraphicsDevice);
+            backgroundMusic = content.Load<Song>("sounds/music/stayinsideme");
+            MediaPlayer.Volume = 0.3f;
+            MediaPlayer.IsRepeating = true;
+            MediaPlayer.Play(backgroundMusic);
         }
 
         protected override void Update(GameTime gameTime)
