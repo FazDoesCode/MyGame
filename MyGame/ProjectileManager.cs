@@ -13,6 +13,7 @@ namespace MyGame
         private double lastCast;
         private Player caster;
         private SoundEffect firesound;
+        private SoundEffect AMOGUS;
 
         public ProjectileManager(Player player, GameRoot game)
         {
@@ -20,6 +21,7 @@ namespace MyGame
             this.caster = player;
             this.castDelay = 500;
             firesound = this.game.content.Load<SoundEffect>("sounds/sound effects/firesound");
+            AMOGUS = this.game.content.Load<SoundEffect>("sounds/sound effects/AMOGUS");
         }
 
         public void Update(GameTime gameTime)
@@ -68,6 +70,7 @@ namespace MyGame
                 {
                     if (firebolt.hitbox.Intersects(enemy.hitbox))
                     {
+                        AMOGUS.Play(0.2f, 0, 0);
                         newEnemyList.Remove(enemy);
                         newProjectileList.Remove(firebolt);
                     }
