@@ -48,7 +48,7 @@ namespace MyGame
             
             if (gameTime.TotalGameTime.TotalMilliseconds > this.lastCast + this.castDelay)
             {
-                this.Add(new Projectile(new Vector2(this.caster.position.X, this.caster.position.Y + (this.caster.texture.Height / 2)), this.game));
+                this.Add(new Projectile(new Vector2(this.caster.position.X, this.caster.position.Y + (this.caster.currentTexture.Height / 2)), this.game));
                 this.lastCast = gameTime.TotalGameTime.TotalMilliseconds;
             }
         }
