@@ -9,7 +9,7 @@ namespace MyGame
     public class Player
     {
         private GameRoot game;
-        public Texture2D[] textures = new Texture2D[3];
+        private Texture2D[] textures = new Texture2D[3];
         public Texture2D currentTexture;
         public Vector2 position;
         public int frags;
