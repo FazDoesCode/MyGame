@@ -66,7 +66,7 @@ namespace MyGame
                     {
                         newEnemyList.Remove(enemy);
                         newProjectileList.Remove(firebolt);
-                        this.caster.score++;
+                        this.caster.frags++;
                     }
                 }
             }

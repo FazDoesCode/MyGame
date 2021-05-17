@@ -9,49 +9,56 @@ namespace MyGame
         private HUDPositions hudPos;
         private GameRoot game;
         private SpriteFont font;
-        private Vector2 scoreOrigin;
+        private Vector2 fragOrigin;
         private Player player;
-        private int score;
+        private int frags;
+        private int castCooldown;
         
         public HUD(GameRoot game)
         {
             this.game = game;
             this.player = this.game.player;
-            this.score = 0;
+            this.frags = 0;
             this.font = this.game.content.Load<SpriteFont>("sprites/font");
-            this.SetHudpositions();
+            this.SetHudPositions();
         }
 
-        private void SetHudpositions()
+        private void SetHudPositions()
         {
             this.hudPos = new HUDPositions
             {
-                scorePos = new Vector2(100, 100)
+                fragsPos = new Vector2(100, 40)
             };
         }
 
         public void Update(GameTime gameTime)
         {
-            this.score = this.player.score;
-            this.scoreOrigin = this.font.MeasureString(this.score.ToString()) / 2;
+            this.frags = this.player.frags;
+
+            this.fragOrigin = this.font.MeasureString(this.frags.ToString()) / 2;
         }
 
         public void Draw()
         {
+            this.FragCounter();
+        }
+        
+        private void FragCounter()
+        {
             this.game.spriteBatch.DrawString(this.font,
-                this.score.ToString(),
-                this.hudPos.scorePos,
-                Color.Black,
+                "Frags: " + this.frags.ToString(),
+                this.hudPos.fragsPos,
+                Color.White,
                 0,
-                this.scoreOrigin,
-                1.0f,
+                this.fragOrigin,
+                2.0f,
                 SpriteEffects.None,
                 0.5f);
         }
 
         private struct HUDPositions
         {
-            public Vector2 scorePos;
+            public Vector2 fragsPos;
         }
     }
 }
