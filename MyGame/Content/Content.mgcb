@@ -25,6 +25,13 @@
 /processorParam:TextureFormat=Color
 /build:sprites/enemies/among-us-red.png
 
+#begin sprites/File.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:sprites/File.spritefont;sprites/font.spritefont
+
 #begin sprites/items/coin.png
 /importer:TextureImporter
 /processor:TextureProcessor

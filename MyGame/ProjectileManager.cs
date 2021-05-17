@@ -66,6 +66,7 @@ namespace MyGame
                     {
                         newEnemyList.Remove(enemy);
                         newProjectileList.Remove(firebolt);
+                        this.caster.score++;
                     }
                 }
             }
@@ -75,6 +76,7 @@ namespace MyGame
             this.game.player.projectileManager.AddRange(newProjectileList);
             this.game.EnemyManager.AddRange(newEnemyList);
         }
+
 
         public void SetCastDelay(int newDelay)
         {

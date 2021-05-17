@@ -11,10 +11,12 @@ namespace MyGame
         private GameRoot game;
         public Texture2D texture;
         public Vector2 position;
+        public int score;
         public ProjectileManager projectileManager;
         private Rectangle hitbox;
         private float speed;
         private float health;
+        
 
         public Player(GameRoot game)
         {
@@ -22,6 +24,7 @@ namespace MyGame
             this.texture = this.game.content.Load<Texture2D>("sprites/player/TrollFace-64x64");
             this.position = new Vector2(100, 400);
             this.projectileManager = new ProjectileManager(this, this.game);
+            this.score = 0;
             this.speed = 500.0f;
             this.health = 3.0f;
         } // Constructor sets all objects and values
