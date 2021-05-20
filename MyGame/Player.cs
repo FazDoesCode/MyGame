@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
@@ -30,6 +31,7 @@ namespace MyGame
             this.frags = 0;
             this.speed = 300.0f;
             this.health = 3.0f;
+            hurtSound = this.game.content.Load<SoundEffect>("sounds/sound effects/FUCK");
         } // Constructor sets all objects and values
         
         public void Update(GameTime gTime, KeyboardState kState)

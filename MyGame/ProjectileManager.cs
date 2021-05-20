@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Input;
 using Keys = Microsoft.Xna.Framework.Input.Keys;
 
@@ -11,12 +12,16 @@ namespace MyGame
         private int castDelay;
         private double lastCast;
         private Player caster;
+        private SoundEffect firesound;
+        private SoundEffect AMOGUS;
 
         public ProjectileManager(Player player, GameRoot game)
         {
             this.game = game;
             this.caster = player;
             this.castDelay = 500;
+            firesound = this.game.content.Load<SoundEffect>("sounds/sound effects/firesound");
+            AMOGUS = this.game.content.Load<SoundEffect>("sounds/sound effects/AMOGUS");
         }
 
         public void Update(GameTime gameTime)
@@ -50,6 +55,7 @@ namespace MyGame
             {
                 this.Add(new Projectile(new Vector2(this.caster.position.X, this.caster.position.Y + (this.caster.currentTexture.Height / 2)), this.game));
                 this.lastCast = gameTime.TotalGameTime.TotalMilliseconds;
+                firesound.Play(0.2f, 0,0);
             }
         }
 
@@ -64,6 +70,7 @@ namespace MyGame
                 {
                     if (firebolt.hitbox.Intersects(enemy.hitbox))
                     {
+                        AMOGUS.Play(0.2f, 0, 0);
                         newEnemyList.Remove(enemy);
                         newProjectileList.Remove(firebolt);
                         this.caster.frags++;

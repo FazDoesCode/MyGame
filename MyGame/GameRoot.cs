@@ -17,7 +17,6 @@ namespace MyGame
         public Player player;
         public HUD hud;
         
-        
         public GameRoot()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -42,6 +41,10 @@ namespace MyGame
         protected override void LoadContent()
         {
             this.spriteBatch = new SpriteBatch(GraphicsDevice);
+            backgroundMusic = content.Load<Song>("sounds/music/stayinsideme");
+            MediaPlayer.Volume = 0.3f;
+            MediaPlayer.IsRepeating = true;
+            MediaPlayer.Play(backgroundMusic);
         }
 
         protected override void Update(GameTime gameTime)

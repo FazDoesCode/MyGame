@@ -13,6 +13,30 @@
 
 #---------------------------------- Content ---------------------------------#
 
+#begin sounds/music/stayinsideme.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:sounds/music/stayinsideme.mp3
+
+#begin sounds/sound effects/AMOGUS.mp3
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:sounds/sound effects/AMOGUS.mp3
+
+#begin sounds/sound effects/firesound.mp3
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:sounds/sound effects/firesound.mp3
+
+#begin sounds/sound effects/FUCK.mp3
+/importer:Mp3Importer
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:sounds/sound effects/FUCK.mp3
+
 #begin sprites/enemies/among-us-red.png
 /importer:TextureImporter
 /processor:TextureProcessor
