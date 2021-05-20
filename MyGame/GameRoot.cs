@@ -2,11 +2,13 @@
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Media;
 
 namespace MyGame 
 {
     public class GameRoot : Game
     {
+        private Song music;
         public GraphicsDeviceManager graphics;
         public ContentManager content;
         public SpriteBatch spriteBatch;
@@ -33,6 +35,7 @@ namespace MyGame
             this.EnemyManager = new EnemyManager(this);
             this.hud = new HUD(this);
             this.HealthPackManager = new HealthPackManager(this);
+            this.Music();
             base.Initialize();
         }
 
@@ -44,10 +47,6 @@ namespace MyGame
         protected override void Update(GameTime gameTime)
         {
             KeyboardState kState = Keyboard.GetState();
-            if (kState.IsKeyDown(Keys.Escape))
-            {
-                this.Exit();
-            }
 
             this.player.Update(gameTime, kState);
             this.EnemyManager.Update(gameTime);
@@ -69,6 +68,14 @@ namespace MyGame
 
             this.spriteBatch.End();
             base.Draw(gameTime);
+        }
+
+        private void Music()
+        {
+            this.music = this.content.Load<Song>("sprites/Shadilay");
+            MediaPlayer.IsRepeating = true;
+            MediaPlayer.Volume = 0.2f;
+            MediaPlayer.Play(this.music);
         }
     }
 }

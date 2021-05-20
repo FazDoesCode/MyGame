@@ -28,7 +28,7 @@ namespace MyGame
             this.position = new Vector2(100, 400);
             this.projectileManager = new ProjectileManager(this, this.game);
             this.frags = 0;
-            this.speed = 500.0f;
+            this.speed = 300.0f;
             this.health = 3.0f;
         } // Constructor sets all objects and values
         
@@ -71,7 +71,6 @@ namespace MyGame
                 if (this.hitbox.Intersects(this.game.EnemyManager[i].hitbox))
                 {
                     this.health--;
-                    Console.WriteLine("Deducted health");
                     this.game.EnemyManager.Remove(this.game.EnemyManager[i]);
                 }
             }

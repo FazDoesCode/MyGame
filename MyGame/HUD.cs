@@ -26,7 +26,7 @@ namespace MyGame
         {
             this.hudPos = new HUDPositions
             {
-                fragsPos = new Vector2(100, 40)
+                fragsPos = new Vector2(40, 40)
             };
         }
 
