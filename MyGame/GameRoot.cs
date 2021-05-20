@@ -11,6 +11,7 @@ namespace MyGame
         public ContentManager content;
         public SpriteBatch spriteBatch;
         public EnemyManager EnemyManager;
+        public HealthPackManager HealthPackManager;
         public Player player;
         public HUD hud;
         
@@ -31,6 +32,7 @@ namespace MyGame
             this.player = new Player(this);
             this.EnemyManager = new EnemyManager(this);
             this.hud = new HUD(this);
+            this.HealthPackManager = new HealthPackManager(this);
             base.Initialize();
         }
 
@@ -50,6 +52,7 @@ namespace MyGame
             this.player.Update(gameTime, kState);
             this.EnemyManager.Update(gameTime);
             this.hud.Update(gameTime);
+            this.HealthPackManager.Update(gameTime);
 
             base.Update(gameTime);
         }
@@ -62,6 +65,7 @@ namespace MyGame
             this.player.Draw();
             this.EnemyManager.Draw();
             this.hud.Draw();
+            this.HealthPackManager.Draw();
 
             this.spriteBatch.End();
             base.Draw(gameTime);

@@ -12,8 +12,7 @@ namespace MyGame
         private Vector2 fragOrigin;
         private Player player;
         private int frags;
-        private int castCooldown;
-        
+
         public HUD(GameRoot game)
         {
             this.game = game;
@@ -45,7 +44,8 @@ namespace MyGame
         
         private void FragCounter()
         {
-            this.game.spriteBatch.DrawString(this.font,
+            this.game.spriteBatch.DrawString(
+                this.font,
                 "Frags: " + this.frags.ToString(),
                 this.hudPos.fragsPos,
                 Color.White,
@@ -53,7 +53,8 @@ namespace MyGame
                 this.fragOrigin,
                 2.0f,
                 SpriteEffects.None,
-                0.5f);
+                0.5f
+            );
         }
 
         private struct HUDPositions

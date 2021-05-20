@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -14,9 +13,9 @@ namespace MyGame
         public Vector2 position;
         public int frags;
         public ProjectileManager projectileManager;
-        private Rectangle hitbox;
+        public Rectangle hitbox;
         private float speed;
-        private float health;
+        public float health;
         
 
         public Player(GameRoot game)
