@@ -70,7 +70,7 @@ namespace MyGame
                 {
                     if (firebolt.hitbox.Intersects(enemy.hitbox))
                     {
-                        AMOGUS.Play(0.2f, 0, 0);
+                        AMOGUS.Play(0.1f, 0, 0);
                         newEnemyList.Remove(enemy);
                         newProjectileList.Remove(firebolt);
                         this.caster.frags++;

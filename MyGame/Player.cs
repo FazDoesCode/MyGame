@@ -17,6 +17,7 @@ namespace MyGame
         public Rectangle hitbox;
         private float speed;
         public float health;
+        public SoundEffect hurtSound;
         
 
         public Player(GameRoot game)
@@ -73,6 +74,7 @@ namespace MyGame
                 if (this.hitbox.Intersects(this.game.EnemyManager[i].hitbox))
                 {
                     this.health--;
+                    hurtSound.Play(0.2f, 0, 0);
                     this.game.EnemyManager.Remove(this.game.EnemyManager[i]);
                 }
             }
